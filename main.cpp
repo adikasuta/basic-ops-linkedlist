@@ -23,6 +23,24 @@ int getSize(Node* n){
     return size;
 }
 
+void deleteNode(Node **head, int index){
+	Node *temp1 = *head;
+	
+	if(index == 1){
+		*head = temp1->next;
+		free(temp1);
+		return;
+	}
+	
+	for(int i=0;i<index-2;i++){
+		temp1 = temp1->next;
+	}
+	
+	Node *temp2 = temp1->next;
+	temp1->next = temp2->next;
+	free(temp2);
+}
+
 void add(Node **head, int value, int index){
 	Node * temp1 = (Node*)malloc(sizeof(Node));
 	temp1->value = value;
@@ -48,24 +66,14 @@ void addTail(Node **head, int value){
 	return add(head,value,getSize(*head)+1);
 }
 
-
-void deleteNode(Node **head, int index){
-	Node *temp1 = *head;
-	
-	if(index == 1){
-		*head = temp1->next;
-		free(temp1);
-		return;
-	}
-	
-	for(int i=0;i<index-2;i++){
-		temp1 = temp1->next;
-	}
-	
-	Node *temp2 = temp1->next;
-	temp1->next = temp2->next;
-	free(temp2);
+void deleteHead(Node **head){
+	return deleteNode(head,1);
 }
+
+void deleteTail(Node **head){
+	return deleteNode(head,getSize(*head));
+}
+
 
 int main(void) {
 	Node *list = NULL;
@@ -81,6 +89,7 @@ int main(void) {
 	
 	deleteNode(&list, 4);
 	deleteNode(&list, 1);
+	deleteTail(&list);
 	printList(list);
 	return 0;
 }
